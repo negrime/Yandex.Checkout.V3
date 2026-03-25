@@ -5,6 +5,10 @@ namespace Yandex.Checkout.V3;
 /// <summary>
 /// Коды НДС
 /// </summary>
+/// <remarks>
+/// Документация:
+/// https://yookassa.ru/developers/payment-acceptance/receipts/54fz/yoomoney/parameters-values#vat-codes
+/// </remarks>
 public enum VatCode
 {
     /// <summary>
