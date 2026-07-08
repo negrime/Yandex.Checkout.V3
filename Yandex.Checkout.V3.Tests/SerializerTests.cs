@@ -7,6 +7,23 @@ namespace Yandex.Checkout.V3.Tests
     public class SerializerTests
     {
         [TestMethod]
+        public void PaymentReceiverDeserializedCorrectly()
+        {
+            // Arrange
+            var receiver = new BankAccount {AccountNumber = "12345678", Bic = "123"};
+            var json = Serializer.SerializeObject(new Payment {Receiver = receiver});
+            
+            // Act
+            var payment = Serializer.DeserializeObject<Payment>(json);
+            
+            // Assert
+            var receiverBankAccount = payment.Receiver as BankAccount;
+            Assert.IsNotNull(receiverBankAccount);
+            Assert.AreEqual(receiver.AccountNumber, receiverBankAccount.AccountNumber);
+            Assert.AreEqual(receiver.Bic, receiverBankAccount.Bic);
+        }
+        
+        [TestMethod]
         public void ReceiptIndustryDetailsSerializedCorrectly()
         {
             var s = Serializer.SerializeObject(new ReceiptIndustryDetails {
@@ -57,6 +74,34 @@ namespace Yandex.Checkout.V3.Tests
             Assert.AreEqual("{\"payout_token\":\"token\"}", s);
         }
 
+        [TestMethod] 
+        public void RefundCancellationDetailsDeserializedCorrectly()
+        {
+            const string json = """
+                                {
+                                        "id": "2d3df78f-0015-5000-9000-15b3448744a5",
+                                        "payment_id": "2d3de338-000f-5000-9000-1a427a10fed5",
+                                        "status": "canceled",
+                                        "created_at": "2024-01-20T15:16:31.461Z",
+                                        "amount": {
+                                            "value": "100.00",
+                                            "currency": "RUB"
+                                        },
+                                        "created_at": "2024-01-20T13:52:38.396Z",
+                                        "cancellation_details": {
+                                            "party": "yoo_money",
+                                            "reason": "expired_on_confirmation"
+                                        }
+                                }
+                                """;
+            
+            var refund = Serializer.DeserializeObject<Refund>(json);
+            
+            Assert.IsNotNull(refund.CancellationDetails);
+            Assert.AreEqual(refund.CancellationDetails.Party, "yoo_money");
+            Assert.AreEqual(refund.CancellationDetails.Reason, "expired_on_confirmation");
+        }
+        
         [TestMethod]
         public void CardPaymentMethodDeserializedCorrectly()
         {
@@ -503,6 +548,52 @@ namespace Yandex.Checkout.V3.Tests
             Assert.AreEqual("01", payment.PaymentMethod.Card.ExpiryMonth);
             Assert.AreEqual("MasterCard", payment.PaymentMethod.Card.CardType);
             Assert.AreEqual("US", payment.PaymentMethod.Card.IssuerCountry);
+        }
+
+        [TestMethod]
+        public void ReceiverDigitalWalletDeserializedCorrectly()
+        {
+            const string accountNumber = "00000";
+
+            var json = Serializer.SerializeObject(new DigitalWallet { AccountNumber = accountNumber });
+            var receiver = Serializer.DeserializeObject<Receiver>(json);
+
+            var receiverDigitalWallet = receiver as DigitalWallet;
+            Assert.IsNotNull(receiverDigitalWallet);
+            Assert.AreEqual(receiverDigitalWallet.AccountNumber, accountNumber);
+        }
+
+        [TestMethod]
+        public void ReceiverMobileBalanceDeserializedCorrectly()
+        {
+            const string phoneNumber = "+70000000000";
+
+            var json = Serializer.SerializeObject(new MobileBalance { Phone = phoneNumber });
+            var receiver = Serializer.DeserializeObject<Receiver>(json);
+
+            var receiverMobileBalance = receiver as MobileBalance;
+            Assert.IsNotNull(receiverMobileBalance);
+            Assert.AreEqual(receiverMobileBalance.Phone, phoneNumber);
+        }
+
+        [TestMethod]
+        public void ReceiverBankAccountDeserializedCorrectly()
+        {
+            const string accountNumber = "00000";
+            const string bic = "000000000";
+
+            var obj = new BankAccount
+            {
+                AccountNumber = accountNumber,
+                Bic = bic
+            };
+            var json = Serializer.SerializeObject(obj);
+            var receiver = Serializer.DeserializeObject<Receiver>(json);
+
+            var receiverBankAccount = receiver as BankAccount;
+            Assert.IsNotNull(receiverBankAccount);
+            Assert.AreEqual(receiverBankAccount.AccountNumber, accountNumber);
+            Assert.AreEqual(receiverBankAccount.Bic, bic);
         }
     }
 }

@@ -5,6 +5,10 @@ namespace Yandex.Checkout.V3;
 /// <summary>
 /// Коды НДС
 /// </summary>
+/// <remarks>
+/// Документация:
+/// https://yookassa.ru/developers/payment-acceptance/receipts/54fz/yoomoney/parameters-values#vat-codes
+/// </remarks>
 public enum VatCode
 {
     /// <summary>
@@ -23,9 +27,9 @@ public enum VatCode
     Vat10 = 3,
 
     /// <summary>
-    /// НДС по ставке 18%
+    /// НДС по ставке 20%
     /// </summary>
-    Vat18 = 4,
+    Vat20 = 4,
 
     /// <summary>
     /// НДС по расчетной ставке 10/110
@@ -33,7 +37,37 @@ public enum VatCode
     Vat110 = 5,
 
     /// <summary>
-    /// НДС чека по расчетной ставке 18/118
+    /// НДС по расчетной ставке 20/120
     /// </summary>
-    Vat118 = 6
+    Vat120 = 6,
+
+    /// <summary>
+    /// НДС по ставке 5%
+    /// </summary>
+    Vat5 = 7,
+
+    /// <summary>
+    /// НДС по ставке 7%
+    /// </summary>
+    Vat7 = 8,
+
+    /// <summary>
+    /// НДС по расчетной ставке 5/105
+    /// </summary>
+    Vat105 = 9,
+
+    /// <summary>
+    /// НДС по расчетной ставке 7/107
+    /// </summary>
+    Vat107 = 10,
+
+    /// <summary>
+    /// НДС по ставке 22%
+    /// </summary>
+    Vat22 = 11,
+
+    /// <summary>
+    /// НДС по расчетной ставке 22/122
+    /// </summary>
+    Vat122 = 12
 }
