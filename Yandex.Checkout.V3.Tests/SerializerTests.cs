@@ -98,8 +98,8 @@ namespace Yandex.Checkout.V3.Tests
             var refund = Serializer.DeserializeObject<Refund>(json);
             
             Assert.IsNotNull(refund.CancellationDetails);
-            Assert.AreEqual(refund.CancellationDetails.Party, "yoo_money");
-            Assert.AreEqual(refund.CancellationDetails.Reason, "expired_on_confirmation");
+            Assert.AreEqual(CancellationParty.YooMoney, refund.CancellationDetails.Party);
+            Assert.AreEqual(CancellationReason.ExpiredOnConfirmation, refund.CancellationDetails.Reason);
         }
         
         [TestMethod]
